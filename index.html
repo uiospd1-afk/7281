@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brew & Bloom - สุนทรียภาพแห่งกาแฟและเบเกอรี่</title>
+    <!-- Google Fonts: Inter & Prompt สำหรับรองรับภาษาไทย -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Prompt:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome สำหรับไอคอน -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================
+           1. CSS RESET & VARIABLES (Material Design 3 Style)
+           ========================================== */
+        :root {
+            --primary-color: #6F4E37;      /* น้ำตาลเข้ม โทนกาแฟ */
+            --primary-hover: #5A3D2B;
+            --secondary-color: #D4A373;    /* น้ำตาลอ่อน / ครีมทอง */
+            --bg-color: #FDFBF7;           /* ครีมสว่าง Clean Minimal */
+            --surface-color: #FFFFFF;
+            --text-main: #2C221E;
+            --text-muted: #6C757D;
+            --border-radius: 16px;         /* Rounded Corner สไตล์ Material 3 */
+            --card-shadow: 0 8px 24px rgba(111, 78, 55, 0.08);
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-family: 'Prompt', 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        body {
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ==========================================
+           2. NAVIGATION BAR (Glass Effect & Sticky)
+           ========================================== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(111, 78, 55, 0.1);
+            transition: var(--transition);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--secondary-color);
+        }
+
+        .brand-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-main);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-link:hover::after, .nav-link.active::after {
+            width: 100%;
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* ==========================================
+           3. HERO SECTION
+           ========================================== */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(rgba(44, 34, 30, 0.6), rgba(44, 34, 30, 0.6)), url('https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            text-align: center;
+            color: #FFFFFF;
+            padding: 0 1rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            z-index: 2;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            font-weight: 300;
+            margin-bottom: 2rem;
+            color: #F1F1F1;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: var(--text-main);
+            padding: 0.85rem 2.2rem;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            box-shadow: 0 4px 14px rgba(212, 163, 115, 0.4);
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            background-color: #c39260;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 163, 115, 0.6);
+        }
+
+        /* ==========================================
+           4. ABOUT SECTION
+           ========================================== */
+        .section {
+            padding: 6rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 3.5rem;
+            font-weight: 300;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .about-image {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+        }
+
+        .about-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .about-image img:hover {
+            transform: scale(1.03);
+        }
+
+        .about-text h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ==========================================
+           5. PRODUCT SECTION & FILTER
+           ========================================== */
+        .products-section {
+            background-color: #F7F3EE;
+            padding: 6rem 0;
+        }
+
+        .products-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .filter-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--surface-color);
+            border: 1px solid rgba(111, 78, 55, 0.2);
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: 500;
+            color: var(--text-main);
+            transition: var(--transition);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border-color: var(--primary-color);
+            box-shadow: 0 4px 12px rgba(111, 78, 55, 0.2);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 2rem;
+        }
+
+        /* Product Card (Material Design 3 style) */
+        .product-card {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(111, 78, 55, 0.05);
+        }
+
+        .product-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 30px rgba(111, 78, 55, 0.12);
+        }
+
+        .product-img-wrapper {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-img-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .product-card:hover .product-img-wrapper img {
+            transform: scale(1.08);
+        }
+
+        .product-category-tag {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(4px);
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            justify-content: space-between;
+        }
+
+        .product-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+        }
+
+        .product-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .btn-order {
+            background-color: var(--primary-color);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-order:hover {
+            background-color: var(--primary-hover);
+        }
+
+        /* ==========================================
+           6. CONTACT SECTION
+           ========================================== */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: stretch;
+        }
+
+        .contact-info-box {
+            background: var(--surface-color);
+            padding: 2.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .contact-item i {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            width: 40px;
+            text-align: center;
+        }
+
+        .contact-item h4 {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .contact-item p, .contact-item a {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-main);
+            transition: var(--transition);
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-color);
+        }
+
+        .map-container {
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            min-height: 350px;
+        }
+
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* ==========================================
+           7. FOOTER
+           ========================================== */
+        .footer {
+            background-color: var(--text-main);
+            color: #FFFFFF;
+            padding: 3rem 2rem 1.5rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-socials a {
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .footer-socials a:hover {
+            background-color: var(--secondary-color);
+            color: var(--text-main);
+            transform: translateY(-3px);
+        }
+
+        .footer-divider {
+            width: 100%;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 1rem 0;
+        }
+
+        .copyright {
+            font-size: 0.875rem;
+            color: #A0A0A0;
+        }
+
+        /* ==========================================
+           8. ANIMATIONS & RESPONSIVE DESIGN
+           ========================================== */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .about-image {
+                max-height: 400px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 70px);
+                background-color: var(--surface-color);
+                flex-direction: column;
+                justify-content: center;
+                transition: var(--transition);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+            .nav-menu.active {
+                left: 0;
+            }
+            .hamburger {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ==========================================
+       NAVIGATION BAR
+       ========================================== -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="logo-container">
+                <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=150&q=80" alt="Brew & Bloom Logo" class="logo-img">
+                <span class="brand-name">Brew & Bloom</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active">หน้าแรก</a></li>
+                <li><a href="#about" class="nav-link">เกี่ยวกับเรา</a></li>
+                <li><a href="#products" class="nav-link">สินค้า</a></li>
+                <li><a href="#contact" class="nav-link">ติดต่อ</a></li>
+            </ul>
+            <div class="hamburger" id="hamburger">
+                <i class="fa-solid fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================
+       1. HERO SECTION
+       ========================================== -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Brew & Bloom</h1>
+            <p>ดื่มด่ำกับรสชาติกาแฟคั่วบดชั้นดี และเบเกอรี่โฮมเมดอบใหม่ทุกวัน ในบรรยากาศที่อบอุ่นผ่อนคลาย</p>
+            <a href="#products" class="btn-primary">ดูสินค้า</a>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       2. ABOUT SECTION
+       ========================================== -->
+    <section id="about" class="section">
+        <h2 class="section-title">เกี่ยวกับเรา</h2>
+        <p class="section-subtitle">เรื่องราวความหลงใหลในกลิ่นอายของกาแฟและเบเกอรี่</p>
+        <div class="about-grid">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=800&q=80" alt="บรรยากาศร้าน Brew & Bloom">
+            </div>
+            <div class="about-text">
+                <h3>คัดสรรเมล็ดกาแฟคุณภาพเพื่อคุณ</h3>
+                <p>Brew & Bloom เกิดจากความตั้งใจที่จะสร้างพื้นที่พักผ่อนหย่อนใจสำหรับคนรักกาแฟ เราคัดสรรเมล็ดกาแฟอาราบิก้าแท้จากแหล่งปลูกชั้นนำ นำมาคั่วด้วยความพิถีพิถันเพื่อให้ได้กลิ่นและรสชาติที่ลงตัวที่สุด</p>
+                <p>นอกจากนี้เรายังมีเบเกอรี่โฮมเมดที่ทำสดใหม่วันต่อวัน ทานคู่กับเครื่องดื่มแก้วโปรดของคุณได้อย่างลงตัว พร้อมต้อนรับทุกท่านด้วยความอบอุ่นและเป็นกันเอง</p>
+                <a href="#contact" class="btn-primary" style="padding: 0.6rem 1.5rem; font-size: 0.95rem;">มาเยี่ยมเราสิ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       3. PRODUCT SECTION (หมวดหมู่สินค้า 4 หมวด และ สินค้า 10 รายการ)
+       ========================================== -->
+    <section id="products" class="products-section">
+        <div class="products-container">
+            <h2 class="section-title">เมนูและสินค้าของเรา</h2>
+            <p class="section-subtitle">เลือกสรรความอร่อยที่คุณชื่นชอบได้เลย</p>
+
+            <!-- Filter ตามหมวดหมู่ (ทั้งหมด + 4 หมวดสินค้า) -->
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">ทั้งหมด</button>
+                <button class="filter-btn" data-filter="กาแฟสด">กาแฟสด</button>
+                <button class="filter-btn" data-filter="เครื่องดื่มอื่นๆ">เครื่องดื่มอื่นๆ</button>
+                <button class="filter-btn" data-filter="เบเกอรี่">เบเกอรี่</button>
+                <button class="filter-btn" data-filter="เมล็ดกาแฟคั่ว">เมล็ดกาแฟคั่ว</button>
+            </div>
+
+            <!-- Grid แสดงสินค้าแบบ Card (10 รายการ) -->
+            <div class="product-grid" id="productGrid">
+                
+                <!-- สินค้า 1 -->
+                <div class="product-card" data-category="กาแฟสด">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">กาแฟสด</span>
+                        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80" alt="Signature Hot Latte">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="pr                <!-- สินค้า 1 -->
+                <div class="product-card" data-category="กาแฟสด">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">กาแฟสด</span>
+                        <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=600&q=80" alt="Signature Hot Latte">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Signature Hot Latte</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">85 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Signature Hot Latte เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 2 -->
+                <div class="product-card" data-category="กาแฟสด">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">กาแฟสด</span>
+                        <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=600&q=80" alt="Iced Americano Honey">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Iced Americano Honey</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">90 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Iced Americano Honey เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 3 -->
+                <div class="product-card" data-category="เครื่องดื่มอื่นๆ">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เครื่องดื่มอื่นๆ</span>
+                        <img src="https://images.unsplash.com/photo-1576092768241-dec231879fc3?auto=format&fit=crop&w=600&q=80" alt="Matcha Green Tea Latte">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Matcha Green Tea Latte</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">110 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Matcha Green Tea Latte เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 4 -->
+                <div class="product-card" data-category="เครื่องดื่มอื่นๆ">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เครื่องดื่มอื่นๆ</span>
+                        <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&w=600&q=80" alt="Cocoa Mint Fresh Milk">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Cocoa Mint Fresh Milk</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">95 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Cocoa Mint Fresh Milk เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 5 -->
+                <div class="product-card" data-category="เบเกอรี่">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เบเกอรี่</span>
+                        <img src="https://images.unsplash.com/photo-1555507036-ab1f4038808a?auto=format&fit=crop&w=600&q=80" alt="Butter Croissant">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Butter Croissant</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">75 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Butter Croissant เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 6 -->
+                <div class="product-card" data-category="เบเกอรี่">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เบเกอรี่</span>
+                        <img src="https://images.unsplash.com/photo-1606313564200-e75d5e30476c?auto=format&fit=crop&w=600&q=80" alt="Chocolate Fudge Brownie">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Chocolate Fudge Brownie</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">80 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Chocolate Fudge Brownie เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 7 -->
+                <div class="product-card" data-category="เบเกอรี่">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เบเกอรี่</span>
+                        <img src="https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=600&q=80" alt="New York Cheesecake">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">New York Cheesecake</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">120 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ New York Cheesecake เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 8 -->
+                <div class="product-card" data-category="เมล็ดกาแฟคั่ว">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เมล็ดกาแฟคั่ว</span>
+                        <img src="https://images.unsplash.com/photo-1611854779393-1b2da9d400fe?auto=format&fit=crop&w=600&q=80" alt="House Blend Dark Roast">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">House Blend Dark Roast (250g)</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">350 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ House Blend Dark Roast เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 9 -->
+                <div class="product-card" data-category="เมล็ดกาแฟคั่ว">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">เมล็ดกาแฟคั่ว</span>
+                        <img src="https://images.unsplash.com/photo-1587049352847-4a222e784d38?auto=format&fit=crop&w=600&q=80" alt="Single Origin Ethiopia Light Roast">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Ethiopia Light Roast (250g)</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">420 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Ethiopia Light Roast เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- สินค้า 10 -->
+                <div class="product-card" data-category="กาแฟสด">
+                    <div class="product-img-wrapper">
+                        <span class="product-category-tag">กาแฟสด</span>
+                        <img src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=600&q=80" alt="Caramel Macchiato">
+                    </div>
+                    <div class="product-info">
+                        <div>
+                            <h3 class="product-title">Caramel Macchiato</h3>
+                        </div>
+                        <div class="product-footer">
+                            <span class="product-price">95 ฿</span>
+                            <button class="btn-order" onclick="alert('สั่งซื้อ Caramel Macchiato เรียบร้อยแล้ว!')">สั่งซื้อ</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       4. CONTACT SECTION
+       ========================================== -->
+    <section id="contact" class="section">
+        <h2 class="section-title">ติดต่อเรา</h2>
+        <p class="section-subtitle">แวะมาพูดคุยหรือเยี่ยมชมร้านของเราได้ทุกวัน</p>
+        
+        <div class="contact-grid">
+            <!-- ข้อมูลติดต่อ -->
+            <div class="contact-info-box">
+                <div>
+                    <h3 style="font-size: 1.5rem; color: var(--primary-color); margin-bottom: 1.5rem;">Brew & Bloom Café</h3>
+                    
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <h4>เบอร์โทรศัพท์</h4>
+                            <a href="tel:0891234567">089-123-4567</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fa-brands fa-line"></i>
+                        <div>
+                            <h4>LINE Official</h4>
+                            <a href="https://line.me" target="_blank">@brewandbloom</a>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <i class="fa-brands fa-facebook"></i>
+                        <div>
+                            <h4>Facebook Page</h4>
+                            <a href="https://facebook.com" target="_blank">Brew & Bloom Café</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <i class="fa-regular fa-clock" style="color: var(--primary-color); margin-right: 8px;"></i> เปิดให้บริการทุกวัน: 08:00 - 18:00 น.
+                </div>
+            </div>
+
+            <!-- Google Map -->
+            <div class="map-container">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3875.567123456789!2d100.501765!3d13.756331!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTPCsDQ1JzIyLjgiTiAxMDDCsDMwJzA2LjQiRQ!5e0!3m2!1sth!2sth!4v1620000000000!5m2!1sth!2sth" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================
+       5. FOOTER
+       ========================================== -->
+    <footer class="footer">
+        <div class="footer-content">
+            <h3 style="font-size: 1.25rem; font-weight: 600;">Brew & Bloom</h3>
+            <p style="color: #A0A0A0; font-size: 0.9rem; max-width: 400px;">สถานที่ที่เต็มเปี่ยมไปด้วยกลิ่นหอมกรุ่นของกาแฟ ความสุข และความผ่อนคลายในทุกๆ วันของคุณ</p>
+            
+            <div class="footer-socials">
+                <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://line.me" target="_blank" aria-label="LINE"><i class="fa-brands fa-line"></i></a>
+                <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+
+            <div class="footer-divider"></div>
+            
+            <p class="copyright">&copy; 2026 Brew & Bloom. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- ==========================================
+       JAVASCRIPT (Interactive & Animation)
+       ========================================== -->
+    <script>
+        // 1. Mobile Menu Toggle
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // ปิดเมนูเมื่อคลิกลิงก์บนมือถือ
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // 2. Product Filter Functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const productCards = document.querySelectorAll('.product-card');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // เปลี่ยนสถานะปุ่ม Active
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+
+                const filterValue = button.getAttribute('data-filter');
+
+                productCards.forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    if (filterValue === 'all' || category === filterValue) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // 3. Navbar Scroll Active Link Highlight
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+                          </html>
+  
